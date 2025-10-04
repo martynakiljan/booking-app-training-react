@@ -1,16 +1,16 @@
 import { useState } from 'react'
 
-export default function Searchbar() {
+export default function Searchbar({ onSearch }) {
 	const styles = { borderRadius: 8, marginRight: 5 }
 
-	const [value, setValue] = useState
+	const [value, setValue] = useState('')
 
-	const onSearch = () => {
-		console.log('szukaj')
+	const onSearchFun = () => {
+		onSearch(value)
 	}
 
-	const onChange = e => {
-		setValue(e.target.value)
+	const onKeyDown = e => {
+		if (e.code === 'Enter') onSearch()
 	}
 
 	return (
@@ -19,13 +19,17 @@ export default function Searchbar() {
 				placeholder='Szukaj...'
 				style={styles}
 				className='form-control'
-				onChange={onChange}
+				onChange={e => setValue(e.target.value)}
+				value={value}
+				onKeyDown={onKeyDown}
 			/>
 			<button
 				type='button'
 				className='btn btn-primary'
-				onClick={onSearch}
-			></button>
+				onClick={onSearchFun}
+			>
+				Search
+			</button>
 		</div>
 	)
 }
