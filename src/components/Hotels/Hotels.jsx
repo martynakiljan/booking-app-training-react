@@ -1,6 +1,10 @@
 import Hotel from './Hotel/Hotel'
+import { use } from 'react'
+import ThemeContext from '../../context/CreateContext'
 
 const Hotels = ({ hotels }) => {
+	const themeContext = use(ThemeContext)
+
 	return (
 		<div className='container'>
 			<div
@@ -14,6 +18,7 @@ const Hotels = ({ hotels }) => {
 					<Hotel
 						{...hotel}
 						key={hotel.id}
+						themeColor={themeContext.color}
 					/>
 				))}
 			</div>

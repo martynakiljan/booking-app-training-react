@@ -1,12 +1,13 @@
 $height: 100px;
 
 .header {
-  min-height: $height;
-  background-color: #cdcdcd;
-  background: url(../../assets/images/header.jpg) center;
-  background-size: cover;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 50px 15px;
+	min-height: $height;
+	width: 100vw;
+	background-color: #cdcdcd;
+	background: url(../../assets/images/header.jpg) center;
+	background-size: cover;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 50px 15px;
 }

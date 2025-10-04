@@ -1,9 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, use } from 'react'
 import Header from '../Header/Header'
 import Hotels from '../Hotels/Hotels'
 import Menu from '../Menu/Menu'
 import './App.css'
 import LoadingIcon from '../Ui/LoadingIcon'
+import Layout from '../Layout/Layout'
+import Footer from '../Footer/Footer'
+import ThemeButton from '../Ui/ThemeButton'
+import ThemeContext from '../../context/CreateContext'
+import Searchbar from '../Header/Searchbar/Searchbar'
+import AuthContext from '../../context/AuthContext'
 
 function App() {
 	const hotelsArr = [
@@ -88,16 +94,18 @@ function App() {
 			image: 'https://picsum.photos/id/1090/400/300',
 		},
 	]
-
 	const [hotels, setHotels] = useState(hotelsArr)
 	const [loading, setLoading] = useState(true)
+	const [themeColor, setThemeColor] = useState('primary')
+	const [user, setUser] = useState(null)
 
 	useEffect(() => {
 		setTimeout(() => {
 			setHotels(hotelsArr)
 			setLoading(false)
 		}, 200)
-	}, [hotelsArr])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	const onSearch = value => {
 		if (!value) {
@@ -108,12 +116,46 @@ function App() {
 		setHotels(filtredHotels)
 	}
 
+	const changeColor = () => {
+		setThemeColor(themeColor === 'danger' ? 'primary' : 'danger')
+	}
+
+	const header = (
+		<Header>
+			<div
+				className='d-flex'
+				style={{ gap: 10 }}
+			>
+				<Searchbar onSearch={onSearch} />
+				<ThemeButton />
+			</div>
+		</Header>
+	)
+
+	const content = loading ? <LoadingIcon /> : <Hotels hotels={hotels} />
+
 	return (
-		<>
-			<Header onSearch={onSearch} />
-			<Menu />
-			{loading ? <LoadingIcon /> : <Hotels hotels={hotels} />}
-		</>
+		<ThemeContext.Provider
+			value={{
+				color: themeColor,
+				changeColor,
+			}}
+		>
+			<AuthContext.Provider
+				value={{
+					isAuthenticated: !!user,
+					logIn: () => setUser(true),
+					logOut: () => setUser(false),
+				}}
+			>
+				<Layout
+					header={header}
+					menu={<Menu />}
+					content={content}
+					footer={<Footer />}
+				/>
+			</AuthContext.Provider>
+		</ThemeContext.Provider>
 	)
 }
 

@@ -1,6 +1,10 @@
 import styles from './Hotel.module.css'
+import { use } from 'react'
+import ThemeContext from '../../../context/CreateContext'
 
 export default function Hotel({ name, city, rating, description, image }) {
+	const themeContext = use(ThemeContext)
+
 	return (
 		<div className={styles.hotel}>
 			<div className='row'>
@@ -31,7 +35,7 @@ export default function Hotel({ name, city, rating, description, image }) {
 			<p className={styles.description}>{description}</p>
 
 			<div className='text-end'>
-				<button className='btn btn-primary'>Show more</button>
+				<button className={`btn btn-${themeContext.color}`}>Show more</button>
 			</div>
 		</div>
 	)
